@@ -1,9 +1,7 @@
 const indexCtrl = {};
 
-
-indexCtrl.renderIndex = (req,res)=>{
-    res.render('index')
-    //res.send('Hello World')
+indexCtrl.renderIndex = (req, res) => {
+  res.render("index");
 };
 
 module.exports = indexCtrl;
