@@ -15,9 +15,7 @@ app.use(express.urlencoded({extended: false}));
 
 
 //Routes
-app.get('/', (req,res)=>{
-    res.send('hello wold')
-});
+app.use(require('./routes/index.routes'));
 
 //Static files
 app.use(express.static(path.join(__dirname,'public')));
