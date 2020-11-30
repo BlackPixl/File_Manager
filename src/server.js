@@ -1,3 +1,4 @@
+var cookieparser = require('cookie-parser');
 const express = require("express");
 const exphbs = require("express-handlebars");
 const path = require("path");
@@ -21,6 +22,7 @@ app.set("view engine", ".hbs");
 
 //Middlewares
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieparser());
 
 //Global Variables
 
