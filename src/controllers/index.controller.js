@@ -2,18 +2,38 @@ const indexCtrl = {};
 const currentRoute = "/home/";
 const { exec } = require("child_process");
 
-const renderPage = (res, stdout) => {
+const renderPage = (res, stdout, currentRoute) => {
   var files_folders = [];
   elementos = stdout.split("\n");
   elementos.pop();
+  var indexCount = 0;
   elementos.forEach((element) => {
+    indexCount+=1;
     if (element.substr(-1) == "/") {
-      files_folders.push({ type: "folder", name: element, folder: true });
+      files_folders.push({ type: "folder", name: element, folder: true, index: indexCount});
     } else {
-      files_folders.push({ type: "file", name: element, folder: false });
+      files_folders.push({ type: "file", name: element, folder: false, index: indexCount});
     }
   });
   res.render("index", { files_folders, route: currentRoute });
+};
+
+const executeCommand = (req, res, props) => {
+  exec(props.command, {cwd: props.cwd}, (err, stdout, stderr) =>{
+    if (err){
+      res.send('Error, por favor vuelve a a pagina principal');
+    }else{
+      exec(
+        "ls -p -A --group-directories-first", { cwd: props.cwd }, (err, stdout, stderr) => {
+          if (err) {
+            res.send("error, por favor recarga la pagina");
+          } else {
+            renderPage(res, stdout, props.cwd);
+          }
+        }
+      );
+    }
+  });
 };
 
 indexCtrl.renderIndexGet = (req, res) => {
@@ -28,7 +48,7 @@ indexCtrl.renderIndexGet = (req, res) => {
         // console.log(err);
         res.send("error, por favor recarga la pagina");
       } else {
-        renderPage(res, stdout);
+        renderPage(res, stdout, currentRoute);
       }
     }
   );
@@ -54,7 +74,7 @@ indexCtrl.renderIndexPost = (req, res) => {
             console.log(currentRoute);
             res.send("error, por favor recarga la pagina");
           } else {
-            renderPage(res, stdout);
+            renderPage(res, stdout, currentRoute);
           }
         }
       );
@@ -77,7 +97,7 @@ indexCtrl.renderIndexPost = (req, res) => {
           if (err) {
             res.send("error, por favor recarga la pagina");
           } else {
-            renderPage(res, stdout);
+            renderPage(res, stdout, currentRoute);
           }
         }
       );
@@ -107,7 +127,7 @@ indexCtrl.renderIndexPost = (req, res) => {
                       // console.log(err);
                       res.send("error, por favor recarga la pagina");
                     } else {
-                      renderPage(res, stdout);
+                      renderPage(res, stdout, currentRoute);
                     }
                   }
                 );
@@ -134,7 +154,7 @@ indexCtrl.renderIndexPost = (req, res) => {
                       // console.log(err);
                       res.send("error, por favor recarga la pagina");
                     } else {
-                      renderPage(res, stdout);
+                      renderPage(res, stdout, currentRoute);
                     }
                   }
                 );
@@ -162,7 +182,7 @@ indexCtrl.renderIndexPost = (req, res) => {
                 if (err) {
                   res.send("error, por favor recarga la pagina");
                 } else {
-                  renderPage(res, stdout);
+                  renderPage(res, stdout, currentRoute);
                 }
               }
             );
@@ -189,7 +209,7 @@ indexCtrl.renderIndexPost = (req, res) => {
                 if (err) {
                   res.send("error, por favor recarga la pagina");
                 } else {
-                  renderPage(res, stdout);
+                  renderPage(res, stdout, currentRoute);
                 }
               }
             );
@@ -197,6 +217,16 @@ indexCtrl.renderIndexPost = (req, res) => {
         }
       );
 
+      break;
+
+    case 'rename':
+      var currentName = req.body.currentName;
+      console.log(req.body);
+      const command = 'mv \''+currentName+'\' '+req.body.newName;
+      props = {
+        cwd : req.cookies.route,
+        command : command};
+      executeCommand(req, res, props);
       break;
 
     default:
