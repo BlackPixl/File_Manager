@@ -2,7 +2,6 @@ const indexCtrl = {};
 const currentRoute = "/home/";
 const { exec } = require("child_process");
 
-
 const renderPage = (res, stdout) => {
   var files_folders = [];
   elementos = stdout.split("\n");
@@ -40,7 +39,7 @@ indexCtrl.renderIndexPost = (req, res) => {
   action = req.body.action;
   console.log(action);
   console.log(currentRoute);
-  console.log(req.body)
+  console.log(req.body);
 
   switch (action) {
     case "enter":
@@ -50,7 +49,6 @@ indexCtrl.renderIndexPost = (req, res) => {
         "ls -p -A --group-directories-first",
         { cwd: currentRoute },
         (err, stdout, stderr) => {
-          var files_folders = [];
           if (err) {
             console.log(err);
             console.log(currentRoute);
@@ -79,33 +77,17 @@ indexCtrl.renderIndexPost = (req, res) => {
           if (err) {
             res.send("error, por favor recarga la pagina");
           } else {
-            elementos = stdout.split("\n");
-            elementos.pop();
-            elementos.forEach((element) => {
-              if (element.substr(-1) == "/") {
-                files_folders.push({
-                  type: "folder",
-                  name: element,
-                  folder: true,
-                });
-              } else {
-                files_folders.push({
-                  type: "file",
-                  name: element,
-                  folder: false,
-                });
-              }
-            });
-            res.render("index", { files_folders, route: currentRoute });
+            renderPage(res, stdout);
           }
         }
       );
       break;
+    
     case "delete":
       var currentRoute = req.cookies.route;
       var nameObject = req.body.nameObject;
       var objectType = req.body.typeObject;
-      
+
       switch (objectType) {
         case "folder":
           exec(
@@ -132,7 +114,7 @@ indexCtrl.renderIndexPost = (req, res) => {
               }
             }
           );
-        break;
+          break;
 
         case "file":
           exec(
@@ -159,13 +141,63 @@ indexCtrl.renderIndexPost = (req, res) => {
               }
             }
           );
-        break;
-
+          break;
       }
       break;
 
     case "create_file":
-      res.send("Pagina en construccion");
+      var nameObject = req.body.nameObject;
+      console.log(req.body);
+      exec(
+        "touch " + nameObject,
+        { cwd: currentRoute },
+        (err, stdout, stderr) => {
+          if (err) {
+            res.send("error al crear el archivo");
+          } else {
+            exec(
+              "ls -p -A --group-directories-first",
+              { cwd: currentRoute },
+              (err, stdout, stderr) => {
+                if (err) {
+                  res.send("error, por favor recarga la pagina");
+                } else {
+                  renderPage(res, stdout);
+                }
+              }
+            );
+          }
+        }
+      );
+
+      break;
+
+    case "create_folder":
+      var nameObject = req.body.nameObject;
+      console.log(req.body);
+      exec(
+        "mkdir " + nameObject,
+        { cwd: currentRoute },
+        (err, stdout, stderr) => {
+          if (err) {
+            res.send("error al crear la carpeta");
+          } else {
+            exec(
+              "ls -p -A --group-directories-first",
+              { cwd: currentRoute },
+              (err, stdout, stderr) => {
+                if (err) {
+                  res.send("error, por favor recarga la pagina");
+                } else {
+                  renderPage(res, stdout);
+                }
+              }
+            );
+          }
+        }
+      );
+
+      break;
 
     default:
       res.send("error, por favor recarga la pagina");

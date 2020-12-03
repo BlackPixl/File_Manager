@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="page-header">
             <h1>
-                {{route}}
+                Ruta: {{route}}
             </h1>
             <div class="row">
                 <div class="col">
@@ -13,7 +13,7 @@
                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
                                     d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-                            </svg> Go Back
+                            </svg> Return
                         </button>
                     </form>
                 </div>
@@ -38,7 +38,8 @@
                                         <input type="hidden" name="action" value="create_file">
                                         <div class="form-group">
                                             <label for="recipient-name" class="col-form-label">Name File</label>
-                                            <input type="text" class="form-control" id="recipient-name">
+                                            <input type="text" class="form-control" id="recipient-name"
+                                                name="nameObject">
                                         </div>
                                         <button type="submit" class="btn btn-primary">Accept</button>
                                     </form>
@@ -51,6 +52,43 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createFolderModal">Create
+                        Folder</button>
+
+                    <!-- MODAL CREATE FILE -->
+                    <div class="modal fade" id="createFolderModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Create Folder</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/" method="POST">
+                                        <input type="hidden" name="action" value="create_folder">
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">Name Folder</label>
+                                            <input type="text" class="form-control" id="recipient-name"
+                                                name="nameObject">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Accept</button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
