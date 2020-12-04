@@ -2,22 +2,37 @@ const indexCtrl = {};
 const { exec } = require("child_process");
 
 const renderPage = (res, props) => {
-  exec('ls -p -A --group-directories-first', {cwd: props.cwd}, (err, stdout, stderr) => {
+  exec("ls -p -l -A --group-directories-first | awk '{$2=$5=$6=$7=$8=\"\";print $0}'", {cwd: props.cwd}, (err, stdout, stderr) => {
     if (err) {
       res.send("error, por favor recarga la pagina");
     } else {
+      const regex = /([ld-])([r-][w-][x-])([r-][w-][x-])([r-][w-][x-]) +([^ ]+) +([^ ]+) +(.+)/g;
+      var m;
       var files_folders = [];
-      elementos = stdout.split("\n");
-      elementos.pop();
       var indexCount = 0;
-      elementos.forEach((element) => {
-        indexCount+=1;
-        if (element.substr(-1) == "/") {
-          files_folders.push({ type: "folder", name: element, folder: true, index: indexCount});
-        } else {
-          files_folders.push({ type: "file", name: element, folder: false, index: indexCount});
+      while ((m = regex.exec(stdout)) !== null) {
+        if (m.index === regex.lastIndex) {
+            regex.lastIndex++;
         }
-      });
+        indexCount += 1;
+        tempObject = {
+          index: indexCount,
+          usr_perm: m[2],
+          group_perm: m[3],
+          other_perm: m[4],
+          usr: m[5],
+          group: m[6],
+          name: m[7]
+        }
+        if (m[1]=='d'){
+          tempObject.folder = true;
+          tempObject.type = 'folder';
+        }else{
+          tempObject.folder = false;
+          tempObject.type = 'file';
+        }
+        files_folders.push(tempObject);
+      }
       res.render("index", { files_folders, route: props.cwd });
     }
   });
@@ -43,7 +58,7 @@ indexCtrl.renderIndexPost = (req, res) => {
   var props = {};
   var currentRoute = req.cookies.route;
   action = req.body.action;
-  
+
   switch (action) {
     case 'enter':
       currentRoute += req.body.folder;
@@ -69,17 +84,16 @@ indexCtrl.renderIndexPost = (req, res) => {
       break;
 
     case 'delete':
-      console.log('paso por delete');
       var objectType = req.body.typeObject;
       if (objectType == 'folder'){
         props = {
           cwd: req.cookies.route,
-          command: 'rm -rf ' + req.body.nameObject
+          command: 'rm -rf ' + '\'' + req.body.nameObject + '\''
         };
       }else if (objectType == 'file'){
         props = {
           cwd: req.cookies.route,
-          command: 'rm -f ' + req.body.nameObject
+          command: 'rm -f ' + '\'' +req.body.nameObject + '\''
         };
       }
       executeCommand(req, res, props);
@@ -88,7 +102,7 @@ indexCtrl.renderIndexPost = (req, res) => {
     case 'create_file':
       props = {
         cwd: req.cookies.route,
-        command: 'touch ' + req.body.nameObject
+        command: 'touch ' + '\'' + req.body.nameObject + '\''
       };
       executeCommand(req, res, props);
       break;
@@ -96,7 +110,7 @@ indexCtrl.renderIndexPost = (req, res) => {
     case 'create_folder':
       props = {
         cwd: req.cookies.route,
-        command: 'mkdir ' + req.body.nameObject
+        command: 'mkdir ' + '\'' + req.body.nameObject + '\''
       };
       executeCommand(req, res, props);
       break;
@@ -105,7 +119,7 @@ indexCtrl.renderIndexPost = (req, res) => {
       var currentName = req.body.currentName;
       props = {
         cwd : req.cookies.route,
-        command : 'mv \''+currentName+'\' '+req.body.newName
+        command : 'mv \''+currentName+'\''+' \''+req.body.newName+'\''
       };
       executeCommand(req, res, props);
       break;
@@ -117,161 +131,3 @@ indexCtrl.renderIndexPost = (req, res) => {
 };
 
 module.exports = indexCtrl;
-
-/*OLD CODE */
-
-/*
-const renderPage = (res, stdout, currentRoute) => {
-  var files_folders = [];
-  elementos = stdout.split("\n");
-  elementos.pop();
-  var indexCount = 0;
-  elementos.forEach((element) => {
-    indexCount+=1;
-    if (element.substr(-1) == "/") {
-      files_folders.push({ type: "folder", name: element, folder: true, index: indexCount});
-    } else {
-      files_folders.push({ type: "file", name: element, folder: false, index: indexCount});
-    }
-  });
-  res.render("index", { files_folders, route: currentRoute });
-};
-*/
-
-
-
-
-  /*  
-    case "delete":
-      var currentRoute = req.cookies.route;
-      var nameObject = req.body.nameObject;
-      var objectType = req.body.typeObject;
-
-      switch (objectType) {
-        case "folder":
-          exec(
-            "rm -rf " + nameObject,
-            { cwd: currentRoute },
-            (err, stdout, stderr) => {
-              if (err) {
-                res.send("error al eliminar la carpeta");
-              } else {
-                exec(
-                  "ls -p -A --group-directories-first",
-                  { cwd: currentRoute },
-                  (err, stdout, stderr) => {
-                    if (err) {
-                      // console.log(stderr);
-                      // console.log("hola");
-                      // console.log(err);
-                      res.send("error, por favor recarga la pagina");
-                    } else {
-                      renderPage(res, stdout, currentRoute);
-                    }
-                  }
-                );
-              }
-            }
-          );
-          break;
-
-        case "file":
-          exec(
-            "rm -f " + nameObject,
-            { cwd: currentRoute },
-            (err, stdout, stderr) => {
-              if (err) {
-                res.send("error al eliminar el archivo");
-              } else {
-                exec(
-                  "ls -p -A --group-directories-first",
-                  { cwd: currentRoute },
-                  (err, stdout, stderr) => {
-                    if (err) {
-                      // console.log(stderr);
-                      // console.log("hola");
-                      // console.log(err);
-                      res.send("error, por favor recarga la pagina");
-                    } else {
-                      renderPage(res, stdout, currentRoute);
-                    }
-                  }
-                );
-              }
-            }
-          );
-          break;
-      }
-      break;
-*/
-
-
-/* 
-    case "create_file":
-      var nameObject = req.body.nameObject;
-      console.log(req.body);
-      exec(
-        "touch " + nameObject,
-        { cwd: currentRoute },
-        (err, stdout, stderr) => {
-          if (err) {
-            res.send("error al crear el archivo");
-          } else {
-            exec(
-              "ls -p -A --group-directories-first",
-              { cwd: currentRoute },
-              (err, stdout, stderr) => {
-                if (err) {
-                  res.send("error, por favor recarga la pagina");
-                } else {
-                  renderPage(res, stdout, currentRoute);
-                }
-              }
-            );
-          }
-        }
-      );
-      break;
-*/
-
-/*
-    case "create_folder":
-      var nameObject = req.body.nameObject;
-      console.log(req.body);
-      exec(
-        "mkdir " + nameObject,
-        { cwd: currentRoute },
-        (err, stdout, stderr) => {
-          if (err) {
-            res.send("error al crear la carpeta");
-          } else {
-            exec(
-              "ls -p -A --group-directories-first",
-              { cwd: currentRoute },
-              (err, stdout, stderr) => {
-                if (err) {
-                  res.send("error, por favor recarga la pagina");
-                } else {
-                  renderPage(res, stdout, currentRoute);
-                }
-              }
-            );
-          }
-        }
-      );
-
-      break;
-*/
-
-/*exec(
-        "ls -p -A --group-directories-first",
-        { cwd: currentRoute },
-        (err, stdout, stderr) => {
-          var files_folders = [];
-          if (err) {
-            res.send("error, por favor recarga la pagina");
-          } else {
-            renderPage(res, stdout, currentRoute);
-          }
-        }
-      );*/
