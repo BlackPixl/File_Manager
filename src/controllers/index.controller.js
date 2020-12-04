@@ -158,12 +158,11 @@ indexCtrl.renderIndexPost = (req, res) => {
       usr_perm = permissionParser(req.body.listU);
       group_perm = permissionParser(req.body.listG);
       others_perm = permissionParser(req.body.listO);
-      console.log(req.body);
       props = {
         cwd: req.cookies.route,
         command: `chmod ${usr_perm}${group_perm}${others_perm} ${req.body.name}`,
       };
-      console.log(props);
+      executeCommand(req, res, props);
       break;
 
     case "change_owner":
