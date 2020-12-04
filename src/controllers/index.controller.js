@@ -166,6 +166,7 @@ indexCtrl.renderIndexPost = (req, res) => {
       break;
 
     case "change_owner":
+      console.log(req.body)
       props = {
         cwd: req.cookies.route,
         command: 'chown \''+req.body.user+'\' \''+req.body.name
@@ -174,7 +175,7 @@ indexCtrl.renderIndexPost = (req, res) => {
       break;
 
     default:
-      res.send("error, por favor recarga la pagina");
+      res.send("error, please reload the page");
       break;
   }
 };

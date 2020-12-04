@@ -94,15 +94,7 @@
         {{#each files_folders}}
         <div class="col-md-4 my-3">
             <div class="card rounded shadow-sm" style="background-color: khaki;">
-                <div class="card-body">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">user perm: {{usr_perm}}</li>
-                        <li class="list-group-item">grop_perm: {{group_perm}}</li>
-                        <li class="list-group-item">other perm: {{other_perm}}</li>
-                        <li class="list-group-item">current Owner: {{usr}}</li>
-                        <li class="list-group-item">group: {{group}}</li>
-                    </ul>
-                </div>
+
                 <div class="card-body">
                     <h4 class="card-title text-truncate align-items-center">
                         {{#if folder}}
@@ -186,7 +178,7 @@
                                     <form action="/" method="POST">
                                         <input type="hidden" name="action" value="change_owner">
                                         <div class="form-group">
-                                            <label for="recipient-copy" class="col-form-label">Name's Owner: </label>
+                                            <label for="recipient-copy" class="col-form-label">Owner's Name: </label>
                                             <input type="hidden" name="name" value="{{name}}">
                                             <input type="text" class="form-control" name="user">
                                         </div>
@@ -288,8 +280,17 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">user perm: {{usr_perm}}</li>
+                                        <li class="list-group-item">grop_perm: {{group_perm}}</li>
+                                        <li class="list-group-item">other perm: {{other_perm}}</li>
+                                        <li class="list-group-item">current Owner: {{usr}}</li>
+                                        <li class="list-group-item">group: {{group}}</li>
+                                    </ul>
+                                </div>
+                                <div class="d-flex modal-body justify-content-center">
                                     <form action="/" method="POST">
-                                    <input type="hidden" name="name" value="{{name}}">
+                                        <input type="hidden" name="name" value="{{name}}">
                                         <input type="hidden" name="action" value="change_permission">
 
                                         <div class="py-2">
