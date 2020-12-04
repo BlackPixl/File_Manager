@@ -139,7 +139,7 @@ indexCtrl.renderIndexPost = (req, res) => {
     case "move":
       props = {
         cwd: req.cookies.route,
-        command: "mv '" + req.body.name + "' '" + req.body.destination,
+        command: "mv '" + req.body.name + "' " + req.body.destination,
       };
       executeCommand(req, res, props);
       break;
@@ -166,13 +166,13 @@ indexCtrl.renderIndexPost = (req, res) => {
       console.log(props);
       break;
 
-    // case 'change_owner':
-    //   props = {
-    //     req.cookies.route,
-    //     command: 'chown \''+req.body.user+'\' \''+req.body.name
-    //   };
-    //   executeCommand(req, res, props);
-    //   break;
+    case "change_owner":
+      props = {
+        cwd: req.cookies.route,
+        command: 'chown \''+req.body.user+'\' \''+req.body.name
+      };
+      executeCommand(req, res, props);
+      break;
 
     default:
       res.send("error, por favor recarga la pagina");
