@@ -126,25 +126,29 @@ indexCtrl.renderIndexPost = (req, res) => {
       /*
     case 'copy':
       props = {
-        cwd: req.cookies.route
+        cwd: req.cookies.route,
+        command: 'cp -r \''+req.body.name+'\' '+req.body.destination
       };
         break;
 
     case 'move':
       props = {
         cwd: req.cookies.route
+        command: 'mv \''+req.body.name+'\' \''+req.body.destination
       };
       break;
       
     case 'change_permission':
       props = {
-        cwd: req.cookies.route
+        cwd: req.cookies.route,
+        chmod...
       };
       break;
 
     case 'change_owner':
       props = {
-        req.cookies.route
+        req.cookies.route,
+        command: 'chown \''+req.body.user+'\' \''+req.body.name
       };
       break;*/
 
