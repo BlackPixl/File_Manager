@@ -92,8 +92,17 @@
 
     <div class="row">
         {{#each files_folders}}
-        <div class="col-md-3 my-3">
-            <div class="card rounded shadow-sm">
+        <div class="col-md-4 my-3">
+            <div class="card rounded shadow-sm" style="background-color: khaki;">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">user perm: {{usr_perm}}</li>
+                        <li class="list-group-item">grop_perm: {{group_perm}}</li>
+                        <li class="list-group-item">other perm: {{other_perm}}</li>
+                        <li class="list-group-item">current Owner: {{usr}}</li>
+                        <li class="list-group-item">group: {{group}}</li>
+                    </ul>
+                </div>
                 <div class="card-body">
                     <h4 class="card-title text-truncate align-items-center">
                         {{#if folder}}
@@ -134,9 +143,113 @@
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                         </form>
                     </div>
+                    <div class="d-flex col-3 m-1">
+                        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
+                            data-target="#permissions_modal{{index}}">
+                            Permissions
+                        </button>
+                    </div>
 
+                    <div class="d-flex col-3 m-1">
+                        <button type="button" class="btn btn-dark btn-sm" data-toggle="modal"
+                            data-target="#copy_modal{{index}}">
+                            Copy
+                        </button>
+                    </div>
 
-                    <!-- MODAL RENAME FILE -->
+                    <div class="d-flex col-3 m-1">
+                        <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal"
+                            data-target="#move_modal{{index}}">
+                            Move
+                        </button>
+                    </div>
+
+                    <div class="d-flex col-3 m-1">
+                        <button type="button" class="btn btn-light " data-toggle="modal"
+                            data-target="#owner_modal{{index}}">
+                            Change Owner
+                        </button>
+                    </div>
+
+                    <!-- MODAL MOVE -->
+                    <div class="modal fade" id="owner_modal{{index}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Change Owner</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/" method="POST">
+                                        <input type="hidden" name="action" value="change_owner">
+                                        <div class="form-group">
+                                            <label for="recipient-copy" class="col-form-label">Name's Owner: </label>
+                                            <input type="hidden" name="name" value="{{name}}">
+                                            <input type="text" class="form-control" name="user">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Accept</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODAL MOVE -->
+                    <div class="modal fade" id="move_modal{{index}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Move</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/" method="POST">
+                                        <input type="hidden" name="action" value="move">
+                                        <div class="form-group">
+                                            <label for="recipient-copy" class="col-form-label">Route: </label>
+                                            <input type="hidden" name="name" value="{{name}}">
+                                            <input type="text" class="form-control" name="destination">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Accept</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODAL COPY -->
+                    <div class="modal fade" id="copy_modal{{index}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Copy</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/" method="POST">
+                                        <input type="hidden" name="action" value="copy">
+                                        <div class="form-group">
+                                            <label for="recipient-copy" class="col-form-label">Route: </label>
+                                            <input type="hidden" name="name" value="{{name}}">
+                                            <input type="text" class="form-control" name="destination">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Accept</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODAL RENAME -->
                     <div class="modal fade" id="renameModal{{index}}" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog">
@@ -153,7 +266,8 @@
                                         <div class="form-group">
                                             <label for="recipient-name" class="col-form-label">New Name</label>
                                             <input type="hidden" name="currentName" value="{{name}}">
-                                            <input type="text" class="form-control" id="recipient-name" name="newName">
+                                            <input type="text" class="form-control" id="recipient-name" name="newName"
+                                                value="{{name}}">
                                         </div>
                                         <button type="submit" class="btn btn-primary">Accept</button>
                                     </form>
@@ -163,12 +277,6 @@
                     </div>
 
                     <!-- MODAL PERMISSIONS -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                        data-target="#permissions_modal{{index}}">
-                        Config Permissions
-                    </button>
-
-                    <!-- Modal -->
                     <div class="modal fade" id="permissions_modal{{index}}" tabindex="-1"
                         aria-labelledby="permissions_modalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -181,6 +289,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <form action="/" method="POST">
+                                    <input type="hidden" name="name" value="{{name}}">
                                         <input type="hidden" name="action" value="change_permission">
 
                                         <div class="py-2">
@@ -257,15 +366,14 @@
         </div>
 
         {{else}}
-        <div class="row">
-            <div class="col">
-                <div class="card m-auto">
-                    <div class="card-body">
-                        <h1>This folder is empty</h1>
-                    </div>
+        <div class="col">
+            <div class="card m-auto">
+                <div class="card-body">
+                    <h1 class="text-center">This folder is empty</h1>
                 </div>
             </div>
         </div>
+
 
         {{/each}}
     </div>
