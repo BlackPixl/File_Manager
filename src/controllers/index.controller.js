@@ -129,6 +129,7 @@ indexCtrl.renderIndexPost = (req, res) => {
         cwd: req.cookies.route,
         command: 'cp -r \''+req.body.name+'\' '+req.body.destination
       };
+      executeCommand(req, res, props);
         break;
 
     case 'move':
@@ -136,6 +137,7 @@ indexCtrl.renderIndexPost = (req, res) => {
         cwd: req.cookies.route
         command: 'mv \''+req.body.name+'\' \''+req.body.destination
       };
+      executeCommand(req, res, props);
       break;
       
     case 'change_permission':
@@ -150,6 +152,7 @@ indexCtrl.renderIndexPost = (req, res) => {
         req.cookies.route,
         command: 'chown \''+req.body.user+'\' \''+req.body.name
       };
+      executeCommand(req, res, props);
       break;*/
 
     default:
