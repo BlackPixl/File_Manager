@@ -125,9 +125,15 @@ indexCtrl.renderIndexPost = (req, res) => {
       break;
       /*
     case 'copy':
+      props = {
+        cwd: req.cookies.route
+      };
         break;
 
     case 'move':
+      props = {
+        cwd: req.cookies.route
+      };
       break;
       
     case 'change_permission':
@@ -137,6 +143,9 @@ indexCtrl.renderIndexPost = (req, res) => {
       break;
 
     case 'change_owner':
+      props = {
+        req.cookies.route
+      };
       break;*/
 
     default:
