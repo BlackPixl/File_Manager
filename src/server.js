@@ -2,9 +2,11 @@ var cookieparser = require('cookie-parser');
 const express = require("express");
 const exphbs = require("express-handlebars");
 const path = require("path");
+var bodyParser = require('body-parser')
 
 // Initializations
 const app = express();
+
 
 //Settings
 app.set("port", process.env.PORT || 4000);
@@ -23,6 +25,9 @@ app.set("view engine", ".hbs");
 //Middlewares
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieparser());
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 //Global Variables
 
