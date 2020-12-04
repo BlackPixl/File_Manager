@@ -45,6 +45,7 @@ const renderPage = (res, props) => {
 const executeCommand = (req, res, props) => {
   exec(props.command, { cwd: props.cwd }, (err, stdout, stderr) => {
     if (err) {
+      console.log(stderr)
       res.send("Error, por favor vuelve a a pagina principal");
     } else {
       renderPage(res, props);
@@ -169,8 +170,9 @@ indexCtrl.renderIndexPost = (req, res) => {
       console.log(req.body)
       props = {
         cwd: req.cookies.route,
-        command: 'chown \''+req.body.user+'\' \''+req.body.name
+        command: `sudo -s chown \'${req.body.user}\' \'${req.body.name}\'`
       };
+      console.log(props)
       executeCommand(req, res, props);
       break;
 
