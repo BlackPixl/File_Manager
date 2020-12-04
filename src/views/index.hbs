@@ -135,28 +135,6 @@
                         </form>
                     </div>
 
-                    <div class="h5">
-                        Permisos
-                    </div>
-                    <form action="/" method="POST">
-                        <input type="hidden" name="action" value="change_permission">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="read" value="4">
-                            <label class="form-check-label" for="inlineCheckbox1">Lectura</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="write" value="2">
-                            <label class="form-check-label" for="inlineCheckbox2">Escritura</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="execute" value="1">
-                            <label class="form-check-label" for="inlineCheckbox3">Ejecución</label>
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-warning btn-sm">Aceptar</button>
-                        </div>
-                    </form>
-
 
                     <!-- MODAL RENAME FILE -->
                     <div class="modal fade" id="renameModal{{index}}" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -183,9 +161,105 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- MODAL PERMISSIONS -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#permissions_modal{{index}}">
+                        Config Permissions
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="permissions_modal{{index}}" tabindex="-1"
+                        aria-labelledby="permissions_modalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Permissions</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/" method="POST">
+                                        <input type="hidden" name="action" value="change_permission">
+
+                                        <input type="hidden" name="listU[0]" value="0">
+                                        <input type="hidden" name="listU[1]" value="0">
+                                        <input type="hidden" name="listU[2]" value="0">
+                                        <div class="py-2">
+                                            <h5>User's Permissions</h5>
+
+                                            <div class="form-check form-check-inline">
+
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                    name="listU[0]" value="4">
+                                                <label class="form-check-label" for="inlineCheckbox1">Read</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
+                                                    name="listU[1]" value="2">
+                                                <label class="form-check-label" for="inlineCheckbox2">Write</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3"
+                                                    name="listU[2]" value="1">
+                                                <label class="form-check-label" for="inlineCheckbox3">Execute</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="py-2">
+                                            <h5>Group Permissions</h5>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                    name="group_read" value="4">
+                                                <label class="form-check-label" for="inlineCheckbox1">Read</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
+                                                    name="group_write" value="2">
+                                                <label class="form-check-label" for="inlineCheckbox2">Write</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3"
+                                                    name="group_execute" value="1">
+                                                <label class="form-check-label" for="inlineCheckbox3">Execute</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="py-2">
+                                            <h5>Other Permissions</h5>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                                    name="other_read" value="4">
+                                                <label class="form-check-label" for="inlineCheckbox1">Read</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
+                                                    name="other_write" value="2">
+                                                <label class="form-check-label" for="inlineCheckbox2">Write</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3"
+                                                    name="other_execute" value="1">
+                                                <label class="form-check-label" for="inlineCheckbox3">Execute</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
+
         {{else}}
         <div class="row">
             <div class="col">

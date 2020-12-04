@@ -36,7 +36,7 @@ const renderPage = (res, props) => {
           }
           files_folders.push(tempObject);
         }
-        res.render("index", { files_folders, route: props.cwd });
+        res.render("index", { files_folders, route: props.cwd});
       }
     }
   );
@@ -145,7 +145,6 @@ indexCtrl.renderIndexPost = (req, res) => {
       break;
 
     case "change_permission":
-      console.log("cange perm");
       console.log(req.body);
       var object = req.body;
       console.log(object.write)
