@@ -145,17 +145,25 @@ indexCtrl.renderIndexPost = (req, res) => {
       break;
 
     case "change_permission":
-      console.log(req.body);
-      var object = req.body;
-      console.log(object.write)
-      if (object.write) {
-        console.log("write");
+      const reducer = (accumulator, currentValue) => parseInt(accumulator) + parseInt(currentValue);
+      const permissionParser = (element)=>{
+        if (element) {
+          if (Array.isArray(element)){
+            return element.reduce(reducer);
+          }else{
+            return parseInt(element);
+          }
+        }else return 0;
       }
-
+      usr_perm = permissionParser(req.body.listU);
+      group_perm = permissionParser(req.body.listG);
+      others_perm = permissionParser(req.body.listO);
+      console.log(req.body);
       props = {
         cwd: req.cookies.route,
-        // chmod...
+        command: `chmod ${usr_perm}${group_perm}${others_perm} ${req.body.name}`,
       };
+      console.log(props);
       break;
 
     // case 'change_owner':
