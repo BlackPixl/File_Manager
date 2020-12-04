@@ -123,6 +123,21 @@ indexCtrl.renderIndexPost = (req, res) => {
       };
       executeCommand(req, res, props);
       break;
+      /*
+    case 'copy':
+        break;
+
+    case 'move':
+      break;
+      
+    case 'change_permission':
+      props = {
+        cwd: req.cookies.route
+      };
+      break;
+
+    case 'change_owner':
+      break;*/
 
     default:
       res.send("error, por favor recarga la pagina");
