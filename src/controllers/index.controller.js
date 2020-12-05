@@ -46,7 +46,7 @@ const executeCommand = (req, res, props) => {
   exec(props.command, { cwd: props.cwd }, (err, stdout, stderr) => {
     if (err) {
       console.log(stderr)
-      res.send("Error, por favor vuelve a a pagina principal");
+      res.render("partials/error2.hbs", {stderr});
     } else {
       renderPage(res, props);
     }
