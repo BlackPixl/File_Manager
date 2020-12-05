@@ -21,6 +21,7 @@ app.engine(
   })
 );
 app.set("view engine", ".hbs");
+app.disable('x-powered-by');
 
 //Middlewares
 app.use(express.urlencoded({ extended: false }));
