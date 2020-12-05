@@ -45,7 +45,6 @@ const renderPage = (res, props) => {
 const executeCommand = (req, res, props) => {
   exec(props.command, { cwd: props.cwd }, (err, stdout, stderr) => {
     if (err) {
-      console.log(stderr)
       res.render("partials/error2.hbs", {stderr});
     } else {
       renderPage(res, props);
@@ -93,12 +92,12 @@ indexCtrl.renderIndexPost = (req, res) => {
       if (objectType == "folder") {
         props = {
           cwd: req.cookies.route,
-          command: "rm -rf " + "'" + req.body.nameObject + "'",
+          command: `rm -rf '${req.body.nameObject}'`,
         };
       } else if (objectType == "file") {
         props = {
           cwd: req.cookies.route,
-          command: "rm -f " + "'" + req.body.nameObject + "'",
+          command: `rm -f '${req.body.nameObject}'`,
         };
       }
       executeCommand(req, res, props);
@@ -107,7 +106,7 @@ indexCtrl.renderIndexPost = (req, res) => {
     case "create_file":
       props = {
         cwd: req.cookies.route,
-        command: "touch " + "'" + req.body.nameObject + "'",
+        command: `touch '${req.body.nameObject}'`
       };
       executeCommand(req, res, props);
       break;
@@ -115,7 +114,7 @@ indexCtrl.renderIndexPost = (req, res) => {
     case "create_folder":
       props = {
         cwd: req.cookies.route,
-        command: "mkdir " + "'" + req.body.nameObject + "'",
+        command: `mkdir '${req.body.nameObject}'`,
       };
       executeCommand(req, res, props);
       break;
@@ -124,7 +123,7 @@ indexCtrl.renderIndexPost = (req, res) => {
       var currentName = req.body.currentName;
       props = {
         cwd: req.cookies.route,
-        command: "mv '" + currentName + "'" + " '" + req.body.newName + "'",
+        command: `mv '${currentName}' '${req.body.newName}'`,
       };
       executeCommand(req, res, props);
       break;
@@ -132,7 +131,7 @@ indexCtrl.renderIndexPost = (req, res) => {
     case "copy":
       props = {
         cwd: req.cookies.route,
-        command: "cp -r '" + req.body.name + "' " + req.body.destination,
+        command: `cp -r '${req.body.name}' '${req.body.destination}'`,
       };
       executeCommand(req, res, props);
       break;
@@ -140,7 +139,7 @@ indexCtrl.renderIndexPost = (req, res) => {
     case "move":
       props = {
         cwd: req.cookies.route,
-        command: "mv '" + req.body.name + "' " + req.body.destination,
+        command: `mv '${req.body.name}' '${req.body.destination}'`,
       };
       executeCommand(req, res, props);
       break;
@@ -161,18 +160,16 @@ indexCtrl.renderIndexPost = (req, res) => {
       others_perm = permissionParser(req.body.listO);
       props = {
         cwd: req.cookies.route,
-        command: `chmod ${usr_perm}${group_perm}${others_perm} ${req.body.name}`,
+        command: `chmod ${usr_perm}${group_perm}${others_perm} '${req.body.name}'`,
       };
       executeCommand(req, res, props);
       break;
 
     case "change_owner":
-      console.log(req.body)
       props = {
         cwd: req.cookies.route,
-        command: `sudo -s chown \'${req.body.user}\' \'${req.body.name}\'`
+        command: `sudo -s chown '${req.body.user}' '${req.body.name}'`
       };
-      console.log(props)
       executeCommand(req, res, props);
       break;
 

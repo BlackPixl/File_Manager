@@ -1,16 +1,16 @@
 <div class="container">
     <div class="row p-3 rounded" style="background-color: dodgerblue;">
         <div class="col-md-12">
-            <input class="form-control" type="text" placeholder="Ruta: {{route}}" readonly>
+            <input class="form-control" type="text" placeholder="Route: {{route}}" readonly>
         </div>
     </div>
 
 
-    <div class="row m-3">
+    <div class="row m-2">
         <div class="col">
             <form action="/" method="POST">
                 <input type="hidden" name="action" value="back">
-                <button type="submit" class="btn btn-success btn-sm">
+                <button type="submit" class="btn btn-success btn-sm my-1">
                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-left" fill="currentColor"
                         xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
@@ -21,7 +21,7 @@
         </div>
 
         <div class="col">
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal">Create
+            <button type="button" class="btn btn-primary btn-sm my-1" data-toggle="modal" data-target="#exampleModal">Create
                 File</button>
 
             <!-- MODAL CREATE FILE -->
@@ -55,7 +55,7 @@
         </div>
 
         <div class="col">
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+            <button type="button" class="btn btn-primary btn-sm my-1" data-toggle="modal"
                 data-target="#createFolderModal">Create
                 Folder</button>
 
@@ -114,55 +114,56 @@
                         </svg>
                         {{/if}}{{ name }}
                     </h4>
-                    {{#if folder}}
-                    <div class="d-flex col-3 m-1">
-                        <form action="/" method="POST">
-                            <input type="hidden" name="action" value="enter">
-                            <input type="hidden" name="folder" value="{{name}}">
-                            <button type="submit" class="btn btn-success btn-sm">Enter</button>
-                        </form>
-                    </div>
-                    {{/if}}
-                    <div class="d-flex col-3 m-1">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
-                            data-target="#renameModal{{index}}">Rename</button>
-                    </div>
-                    <div class="d-flex col-3 m-1">
-                        <form action="/" method="POST">
-                            <input type="hidden" name="action" value="delete">
-                            <input type="hidden" name="nameObject" value="{{name}}">
-                            <input type="hidden" name="typeObject" value="{{type}}">
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                    </div>
-                    <div class="d-flex col-3 m-1">
-                        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
-                            data-target="#permissions_modal{{index}}">
-                            Permissions
-                        </button>
-                    </div>
+                    <div class="row">
+                        {{#if folder}}
+                        <div class="d-flex my-1 mx-1">
+                            <form action="/" method="POST">
+                                <input type="hidden" name="action" value="enter">
+                                <input type="hidden" name="folder" value="{{name}}">
+                                <button type="submit" class="btn btn-success btn-sm">Enter</button>
+                            </form>
+                        </div>
+                        {{/if}}
+                        <div class="d-flex my-1 mx-1">
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                data-target="#renameModal{{index}}">Rename</button>
+                        </div>
+                        <div class="d-flex my-1 mx-1">
+                            <form action="/" method="POST">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="nameObject" value="{{name}}">
+                                <input type="hidden" name="typeObject" value="{{type}}">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                        <div class="d-flex my-1 mx-1">
+                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
+                                data-target="#permissions_modal{{index}}">
+                                Permissions
+                            </button>
+                        </div>
 
-                    <div class="d-flex col-3 m-1">
-                        <button type="button" class="btn btn-dark btn-sm" data-toggle="modal"
-                            data-target="#copy_modal{{index}}">
-                            Copy
-                        </button>
-                    </div>
+                        <div class="d-flex my-1 mx-1">
+                            <button type="button" class="btn btn-dark btn-sm" data-toggle="modal"
+                                data-target="#copy_modal{{index}}">
+                                Copy
+                            </button>
+                        </div>
 
-                    <div class="d-flex col-3 m-1">
-                        <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal"
-                            data-target="#move_modal{{index}}">
-                            Move
-                        </button>
-                    </div>
+                        <div class="d-flex my-1 mx-1">
+                            <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal"
+                                data-target="#move_modal{{index}}">
+                                Move
+                            </button>
+                        </div>
 
-                    <div class="d-flex col-3 m-1">
-                        <button type="button" class="btn btn-light " data-toggle="modal"
-                            data-target="#owner_modal{{index}}">
-                            Change Owner
-                        </button>
+                        <div class="d-flex my-1 mx-1">
+                            <button type="button" class="btn btn-light btn-sm" data-toggle="modal"
+                                data-target="#owner_modal{{index}}">
+                                Change Owner
+                            </button>
+                        </div>
                     </div>
-
                     <!-- MODAL MOVE -->
                     <div class="modal fade" id="owner_modal{{index}}" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
@@ -280,12 +281,12 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">User's permissions: {{usr_perm}}</li>
-                                        <li class="list-group-item">Group's permissions: {{group_perm}}</li>
-                                        <li class="list-group-item">Other's permissions: {{other_perm}}</li>
-                                        <li class="list-group-item">Current Owner: {{usr}}</li>
-                                        <li class="list-group-item">Group: {{group}}</li>
+                                    <ul class="list-group align-self-center">
+                                        <li class="list-group-item py-1">User permissions: {{usr_perm}}</li>
+                                        <li class="list-group-item py-1">Group permissions: {{group_perm}}</li>
+                                        <li class="list-group-item py-1">Other permissions: {{other_perm}}</li>
+                                        <li class="list-group-item py-1">Current Owner: {{usr}}</li>
+                                        <li class="list-group-item py-1">Group: {{group}}</li>
                                     </ul>
                                 </div>
                                 <div class="d-flex modal-body justify-content-center">
@@ -294,7 +295,7 @@
                                         <input type="hidden" name="action" value="change_permission">
 
                                         <div class="py-2">
-                                            <h5>User's Permissions</h5>
+                                            <h5>User Permissions</h5>
                                             <div class="form-check form-check-inline">
 
                                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
