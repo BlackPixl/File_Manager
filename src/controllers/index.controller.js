@@ -7,7 +7,8 @@ const renderPage = (res, props) => {
     { cwd: props.cwd },
     (err, stdout, stderr) => {
       if (err) {
-        res.send("error, por favor recarga la pagina");
+        res.status(400);
+        res.render("partials/error2.hbs", {stderr});
       } else {
         const regex = /([ld-])([r-][w-][x-])([r-][w-][x-])([r-][w-][x-]) +([^ ]+) +([^ ]+) +(.+)/g;
         var m;
@@ -45,6 +46,7 @@ const renderPage = (res, props) => {
 const executeCommand = (req, res, props) => {
   exec(props.command, { cwd: props.cwd }, (err, stdout, stderr) => {
     if (err) {
+      res.status(400);
       res.render("partials/error2.hbs", {stderr});
     } else {
       renderPage(res, props);
@@ -174,7 +176,8 @@ indexCtrl.renderIndexPost = (req, res) => {
       break;
 
     default:
-      res.send("error, please reload the page");
+      res.status(400);
+      res.render("partials/error2.hbs", {stderr: 'Unknown error'});
       break;
   }
 };

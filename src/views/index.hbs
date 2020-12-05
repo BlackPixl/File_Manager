@@ -164,7 +164,7 @@
                             </button>
                         </div>
                     </div>
-                    <!-- MODAL MOVE -->
+                    <!-- MODAL CHANGE-OWNER -->
                     <div class="modal fade" id="owner_modal{{index}}" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog">
@@ -179,9 +179,9 @@
                                     <form action="/" method="POST">
                                         <input type="hidden" name="action" value="change_owner">
                                         <div class="form-group">
-                                            <label for="recipient-copy" class="col-form-label">Owner's Name: </label>
+                                            <label for="recipient-copy" class="col-form-label">New Owner's Name: </label>
                                             <input type="hidden" name="name" value="{{name}}">
-                                            <input type="text" class="form-control" name="user">
+                                            <input type="text" class="form-control" name="user" value="{{usr}}">
                                         </div>
                                         <button type="submit" class="btn btn-primary">Accept</button>
                                     </form>
@@ -285,7 +285,7 @@
                                         <li class="list-group-item py-1">User permissions: {{usr_perm}}</li>
                                         <li class="list-group-item py-1">Group permissions: {{group_perm}}</li>
                                         <li class="list-group-item py-1">Other permissions: {{other_perm}}</li>
-                                        <li class="list-group-item py-1">Current Owner: {{usr}}</li>
+                                        <li class="list-group-item py-1">Current owner: {{usr}}</li>
                                         <li class="list-group-item py-1">Group: {{group}}</li>
                                     </ul>
                                 </div>
