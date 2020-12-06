@@ -170,7 +170,7 @@ indexCtrl.renderIndexPost = (req, res) => {
     case "change_owner":
       props = {
         cwd: req.cookies.route,
-        command: `sudo -s chown '${req.body.user}' '${req.body.name}'`
+        command: `sudo chown '${req.body.user}' '${req.body.name}'`
       };
       executeCommand(req, res, props);
       break;
